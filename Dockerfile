@@ -2,9 +2,9 @@
 FROM frolvlad/alpine-miniconda3
 
 #COPY/ADD <all> <the> <things> <last-arg-is-destination>
-ADD  scripts /scripts
 ADD  conda_anaconda.txt /conda_anaconda.txt
 ADD  conda_forge.txt /conda_forge.txt
+ADD  requirements.txt /requirements.txt
 #ADD  scripts/ssh_copy_config /root/.ssh/config
 
 WORKDIR /
@@ -38,8 +38,6 @@ RUN ["conda", "install", "--yes", "-c", "conda-forge", "--file", "conda_forge.tx
 RUN ["conda", "install", "--yes", "-c", "anaconda", "--file", "conda_anaconda.txt"]
 RUN ["conda", "init"]
 
-RUN mkdir /data
+ENV PYTHONUNBUFFERED 1
 
-RUN ["chmod", "+x", "/scripts/install_list.sh"]
-
-ENTRYPOINT ["sh", "/scripts/install_list.sh"]
+RUN mkdir /results
